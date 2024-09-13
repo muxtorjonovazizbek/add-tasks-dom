@@ -2,26 +2,23 @@ const result = document.getElementById("result")
 const user__modal = document.getElementById("user__modal")
 const close = document.getElementById("close")
 const save = document.getElementById("save")
-let form = {}
+let form = {} 
 
 let todos = [
     {status: "open", tasks: []},
     {status: "pending", tasks: []},
     {status: "inproge", tasks: []},
     {status: "complete", tasks: []},
-]   
-
+]
 
 document.addEventListener("DOMContentLoaded", function () {
     save.addEventListener("click", addTask)
-   displayTodos()
-   
+    displayTodos()
 })
 
 close.addEventListener("click", () => {
     toggleModal("none")
 })
-
 
 function displayTodos() {
     result.innerHTML = ""
@@ -42,7 +39,8 @@ function displayTodos() {
 
             <div class="card-footer">
                 <div class="d-flex justify-content-center">
-                    <button onclick="openModal()" class="btn btn-success">Add Task</button>    
+                    <!-- O'ZGARTIRILDI: openModal funksiyasiga status ham uzatiladi -->
+                    <button onclick="openModal('${item.status}')" class="btn btn-success">Add Task</button>    
                 </div>
             </div>
         </div>`
@@ -50,10 +48,13 @@ function displayTodos() {
     })  
 }
 
-
-function openModal() {
-     toggleModal("block")
+function openModal(status) {
+    form.status = status 
+    toggleModal("block")
 }
+
+
+document.getElementById("taskInput").oninput = handleChange
 
 function handleChange(event) {
     const {name, value} = event.target
@@ -61,9 +62,7 @@ function handleChange(event) {
 }
 
 function addTask() {
-    console.log(form);
     
-    // console.log(form);.
     if (form.task && form.status) {
         todos.forEach(item => {
             if (item.status === form.status) {
@@ -72,10 +71,10 @@ function addTask() {
         })
         displayTodos()
         toggleModal("none")
-    }else {
-        alert("Ikkala joyni ham tol'ldiring")
+        form = {} 
+    } else {
+        alert("Ikkala joyni ham tol'diring")
     }
-    
 }
 
 function toggleModal(status) {
